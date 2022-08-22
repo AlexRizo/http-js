@@ -2,7 +2,9 @@ import { obtenerUsuarios } from "./http-provider";
 
 
 const body  = document.body;
-let co = 1, trRow;
+let co = 1, tbody;
+
+// console.log(_usuarios);
 
 const crearHtml = () => {
     
@@ -31,17 +33,8 @@ const crearHtml = () => {
     // ya que los TRs van dentro del tbody
             // querySelector('tbody');
             // Crear una variable para mantener la referencia?
-
+    tbody = document.querySelector('tbody');
 }
-
-const eventos = () => {
-    trRow = document.querySelector('tbody');
-
-    for (const usuario of obtenerUsuarios()) {
-        crearFilaUsuario(usuario);
-    }
-}
-
 
 // La función crearFilaUsuario debería de recibir un UNICO usuario
 // con la siguiente estructura
@@ -60,7 +53,7 @@ const crearFilaUsuario = ( usuario ) => {
     const html = `
         <td scope="col"> ${co++}. </td>
         <td scope="col"> ${usuario.email} </td>
-        <td scope="col"> ${usuario.fisrt_name} ${usuario.last_name} </td>
+        <td scope="col"> ${usuario.first_name} ${usuario.last_name} </td>
         <td scope="col">
             <img class="img-thumbnail" src="${usuario.avatar}">
         </td>
@@ -70,7 +63,7 @@ const crearFilaUsuario = ( usuario ) => {
     tr.innerHTML = html;
 
     // Añadir el table row (tr) dentro del TBody creado anteriormente
-
+    tbody.appendChild(tr);
 
 }
 
@@ -78,7 +71,7 @@ const crearFilaUsuario = ( usuario ) => {
 export const init = async() => {
 
     crearHtml();
-    eventos();
+    (await obtenerUsuarios()).forEach(crearFilaUsuario);
 
     // Obtener la lista de usuarios usando el servicio creado
     // Por cada usuario, llamar la función crearFila (for, forEach)
